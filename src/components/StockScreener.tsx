@@ -166,10 +166,10 @@ const StockScreener = () => {
             ))}
 
             <div className="actionBtns w-full flex gap-3">
-              <Button variant={"outline"} className="">
+            <Button variant={"outline"} className="" onClick={() => addFilter()}>
                 + Add Filter
               </Button>
-              <Button variant={"outline"} className="bg-green-500 text-white">
+              <Button variant={"outline"} className="bg-green-500 text-white" onClick={() => applyFilters()}>
                 Compare Sample Stocks
               </Button>
             </div>
