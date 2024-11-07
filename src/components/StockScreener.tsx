@@ -4,23 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
-
-// Sample dataset - In a real app, this would be imported from a JSON file
-const sampleStocks = [
-  {
-    name: "Stock A",
-    marketCap: 15000,
-    peRatio: 18.5,
-    roe: 17.8,
-    debtEquity: 0.8,
-    dividendYield: 2.5,
-    revenueGrowth: 12.3,
-    epsGrowth: 11.5,
-    currentRatio: 2.2,
-    grossMargin: 45.6,
-  },
-  // Add more sample stocks here
-];
+import sampleStocks from '../assests/sampleStocks.json'; 
 
 const parameters = [
   { id: 'marketCap', label: 'Market Capitalization', key: 'marketCap' },
@@ -172,7 +156,7 @@ const StockScreener = () => {
               <tbody>
                 {currentStocks.map((stock, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
-                    <td className="p-2">{stock.name}</td>
+                    <td className="p-2">{stock.Ticker}</td>
                     {parameters.map(param => (
                       <td key={param.id} className="p-2">
                         {stock[param.key as keyof typeof stock] ? (stock[param.key as keyof typeof stock] as number).toFixed(2) : "-"}

@@ -34,8 +34,6 @@ const SortableStockTable: React.FC<SortableStockTableProps> = ({
   parameters,
   sortConfig,
   onSort,
-  currentPage, // Keep these props even if unused for now
-  itemsPerPage // They might be used in future implementations
 }) => {
   const getHeaderSortIcon = (paramId: string) => {
     if (sortConfig.key === paramId) {
