@@ -1,22 +1,30 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Lexend, Pacifico } from "next/font/google";
 
-const inter = Inter({ subsets: ['latin'] })
+const paci = Pacifico({
+  weight: "400",
+});
 
 export const metadata: Metadata = {
-  title: 'Stock Screener',
-  description: 'A web-based stock screening tool',
-}
+  title: "Stock Screener",
+  description: "A web-based stock screening tool",
+};
+
+const lexend = Lexend({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={lexend.className}>{children}</body>
     </html>
-  )
+  );
 }

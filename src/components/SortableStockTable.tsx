@@ -69,7 +69,7 @@ const SortableStockTable: React.FC<SortableStockTableProps> = ({
                 <td className="py-3 px-4">{stock.name}</td>
                 {parameters.map((param) => (
                   <td key={param.id} className="py-3 px-4">
-                    {stock[param.key] || "N/A"}
+                    {stock[param.label] || "N/A"}
                   </td>
                 ))}
               </tr>
