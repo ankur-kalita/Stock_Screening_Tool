@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -5,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
 import sampleStocks from '../assests/sampleStocks.json';
-import SortableStockTable from './SortableStockTable'; // Import the SortableStockTable component
+import SortableStockTable from './SortableStockTable';
 
 const parameters = [
   { id: 'marketCap', label: 'Market Capitalization', key: 'marketCap' },
@@ -27,14 +28,25 @@ const operators = [
 
 const StockScreener = () => {
   const [filters, setFilters] = useState([{ id: 1, parameter: '', operator: '>', value: '' }]);
-  const [filteredStocks, setFilteredStocks] = useState(sampleStocks);
-  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
+  const [filteredStocks, setFilteredStocks] = useState<Array<{
+    Ticker: string;
+    "Market Capitalization (B)": number;
+    "P/E Ratio": number;
+    "ROE (%)": number;
+    "Debt-to-Equity Ratio": number;
+    "Dividend Yield (%)": number;
+    "Revenue Growth (%)": number;
+    "EPS Growth (%)": number;
+    "Current Ratio": number;
+    "Gross Margin (%)": number;
+  }>>([]);
+  const [showTable, setShowTable] = useState(false);
 
   const applyFilters = () => {
     const filteredData = sampleStocks.filter(stock => {
       return filters.every(filter => {
         if (!filter.parameter || !filter.value) return true;
-        
+
         const stockValue = stock[filter.parameter as keyof typeof stock];
         const filterValue = parseFloat(filter.value) || 0;
 
@@ -47,38 +59,7 @@ const StockScreener = () => {
       });
     });
     setFilteredStocks(filteredData);
-  };
-
-  const handleSort = (key: string) => {
-    const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
-    setSortConfig({ key, direction });
-    const sortedData = [...filteredStocks].sort((a, b) => {
-      const aValue = a[key as keyof typeof a];
-      const bValue = b[key as keyof typeof b];
-      if (aValue < bValue) return direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return direction === 'asc' ? 1 : -1;
-      return 0;
-    });
-    setFilteredStocks(sortedData);
-  };
-
-  const compareWithSampleStocks = () => {
-    const comparedData = sampleStocks.filter(stock => {
-      return filters.every(filter => {
-        if (!filter.parameter || !filter.value) return true;
-        
-        const stockValue = stock[filter.parameter as keyof typeof stock];
-        const filterValue = parseFloat(filter.value) || 0;
-
-        switch (filter.operator) {
-          case '>': return Number(stockValue) > filterValue;
-          case '<': return Number(stockValue) < filterValue;
-          case '=': return Number(stockValue) === filterValue;
-          default: return true;
-        }
-      });
-    });
-    setFilteredStocks(comparedData);
+    setShowTable(true);  // Show table after filtering
   };
 
   const updateFilter = (id: number, field: string, value: string) => {
@@ -150,32 +131,26 @@ const StockScreener = () => {
               className="mt-4"
             >
               <Plus className="h-4 w-4 mr-2" /> Add Filter
+            </Button>
             <Button
               variant="outline"
               onClick={applyFilters}
               className="mt-4"
             >
-              Apply Filters
-            </Button>
-            <Button
-              variant="outline"
-              onClick={compareWithSampleStocks}
-              className="mt-4"
-            >
               Compare with Sample Stocks
-            </Button>
             </Button>
           </div>
         </CardContent>
       </Card>
       
-      {/* Pass filtered stocks to SortableStockTable */}
-      <SortableStockTable
-        stocks={filteredStocks.map(stock => ({ ...stock, name: stock.Ticker }))}
-        parameters={parameters}
-        sortConfig={{ ...sortConfig, direction: sortConfig.direction === 'asc' || sortConfig.direction === 'desc' ? sortConfig.direction : 'asc' }}
-        onSort={handleSort}
-      />
+      {showTable && (
+        <SortableStockTable
+          stocks={filteredStocks.map(stock => ({ ...stock, name: stock.Ticker }))}
+          parameters={parameters}
+          onSort={() => {}}
+          sortConfig={{ key: '', direction: 'asc' }}
+        />
+      )}
     </div>
   );
 };
