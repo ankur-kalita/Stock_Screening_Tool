@@ -17,7 +17,7 @@ export function generateStockData(count = 500) {
     return `${name1} ${name2}`;
   }
 
-  function randomInRange(min, max, decimals = 2) {
+  function randomInRange(min: number, max: number, decimals = 2): number {
     return Number((Math.random() * (max - min) + min).toFixed(decimals));
   }
 
@@ -43,54 +43,54 @@ export const stockParameters = [
     id: 'marketCap',
     label: 'Market Capitalization',
     key: 'marketCap',
-    format: (value) => `$${value.toLocaleString()}M`
+    format: (value: number) => `$${value.toLocaleString()}M`
   },
   { 
     id: 'peRatio',
     label: 'P/E Ratio',
     key: 'peRatio',
-    format: (value) => value.toFixed(2)
+    format: (value: number) => value.toFixed(2)
   },
   { 
     id: 'roe',
     label: 'ROE',
     key: 'roe',
-    format: (value) => `${value.toFixed(2)}%`
+    format: (value: number) => `${value.toFixed(2)}%`
   },
   { 
     id: 'debtEquity',
     label: 'Debt-to-Equity',
     key: 'debtEquity',
-    format: (value) => value.toFixed(2)
+    format: (value: number) => value.toFixed(2)
   },
   { 
     id: 'dividendYield',
     label: 'Dividend Yield',
     key: 'dividendYield',
-    format: (value) => `${value.toFixed(2)}%`
+    format: (value: number) => `${value.toFixed(2)}%`
   },
   { 
     id: 'revenueGrowth',
     label: 'Revenue Growth',
     key: 'revenueGrowth',
-    format: (value) => `${value.toFixed(2)}%`
+    format: (value: number) => `${value.toFixed(2)}%`
   },
   { 
     id: 'epsGrowth',
     label: 'EPS Growth',
     key: 'epsGrowth',
-    format: (value) => `${value.toFixed(2)}%`
+    format: (value: number) => `${value.toFixed(2)}%`
   },
   { 
     id: 'currentRatio',
     label: 'Current Ratio',
     key: 'currentRatio',
-    format: (value) => value.toFixed(2)
+    format: (value: number) => value.toFixed(2)
   },
   { 
     id: 'grossMargin',
     label: 'Gross Margin',
     key: 'grossMargin',
-    format: (value) => `${value.toFixed(2)}%`
+    format: (value: number) => `${value.toFixed(2)}%`
   }
 ];

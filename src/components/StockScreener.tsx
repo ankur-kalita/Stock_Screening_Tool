@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
 
-// Sample dataset - In real app, this would be imported from a JSON file
+// Sample dataset - In a real app, this would be imported from a JSON file
 const sampleStocks = [
   {
     name: "Stock A",
@@ -15,7 +17,7 @@ const sampleStocks = [
     revenueGrowth: 12.3,
     epsGrowth: 11.5,
     currentRatio: 2.2,
-    grossMargin: 45.6
+    grossMargin: 45.6,
   },
   // Add more sample stocks here
 ];
@@ -55,13 +57,13 @@ const StockScreener = () => {
     setFilters([...filters, newFilter]);
   };
 
-  const removeFilter = (id) => {
+  const removeFilter = (id: number) => {
     if (filters.length > 1) {
       setFilters(filters.filter(filter => filter.id !== id));
     }
   };
 
-  const updateFilter = (id, field, value) => {
+  const updateFilter = (id: number, field: string, value: string | number) => {
     setFilters(filters.map(filter => 
       filter.id === id ? { ...filter, [field]: value } : filter
     ));
@@ -72,13 +74,13 @@ const StockScreener = () => {
       return filters.every(filter => {
         if (!filter.parameter || !filter.value) return true;
         
-        const stockValue = stock[filter.parameter];
-        const filterValue = parseFloat(filter.value);
+        const stockValue = stock[filter.parameter as keyof typeof stock];
+        const filterValue = parseFloat(filter.value) || 0; // Default to 0 if NaN
         
         switch (filter.operator) {
-          case '>': return stockValue > filterValue;
-          case '<': return stockValue < filterValue;
-          case '=': return stockValue === filterValue;
+          case '>': return Number(stockValue) > filterValue;
+          case '<': return Number(stockValue) < filterValue;
+          case '=': return Number(stockValue) === filterValue;
           default: return true;
         }
       });
@@ -86,7 +88,7 @@ const StockScreener = () => {
   }, [filters]);
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredStocks.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(filteredStocks.length / itemsPerPage));
   const currentStocks = filteredStocks.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -173,7 +175,7 @@ const StockScreener = () => {
                     <td className="p-2">{stock.name}</td>
                     {parameters.map(param => (
                       <td key={param.id} className="p-2">
-                        {stock[param.key].toFixed(2)}
+                        {stock[param.key as keyof typeof stock] ? (stock[param.key as keyof typeof stock] as number).toFixed(2) : "-"}
                       </td>
                     ))}
                   </tr>

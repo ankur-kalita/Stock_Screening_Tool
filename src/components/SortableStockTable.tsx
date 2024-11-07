@@ -5,14 +5,14 @@ import { Button } from '@/components/ui/button';
 interface Stock {
   id: string;
   name: string;
-  [key: string]: any; // For dynamic parameter values
+  [key: string]: unknown; // For dynamic parameter values
 }
 
 interface Parameter {
   id: string;
   key: string;
   label: string;
-  format: (value: any) => string | number;
+  format: (value: unknown) => string | number;
 }
 
 interface SortConfig {
