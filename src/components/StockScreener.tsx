@@ -1,10 +1,9 @@
-"use client";
-
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
-import sampleStocks from '../assests/sampleStocks.json'; 
+import sampleStocks from '../assests/sampleStocks.json';
+import SortableStockTable from './SortableStockTable'; // Import the SortableStockTable component
 
 const parameters = [
   { id: 'marketCap', label: 'Market Capitalization', key: 'marketCap' },
@@ -25,42 +24,18 @@ const operators = [
 ];
 
 const StockScreener = () => {
-  const [filters, setFilters] = useState([
-    { id: 1, parameter: '', operator: '>', value: '' }
-  ]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [filters, setFilters] = useState([{ id: 1, parameter: '', operator: '>', value: '' }]);
+  const [filteredStocks, setFilteredStocks] = useState(sampleStocks);
+  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
 
-  const addFilter = () => {
-    const newFilter = {
-      id: filters.length + 1,
-      parameter: '',
-      operator: '>',
-      value: ''
-    };
-    setFilters([...filters, newFilter]);
-  };
-
-  const removeFilter = (id: number) => {
-    if (filters.length > 1) {
-      setFilters(filters.filter(filter => filter.id !== id));
-    }
-  };
-
-  const updateFilter = (id: number, field: string, value: string | number) => {
-    setFilters(filters.map(filter => 
-      filter.id === id ? { ...filter, [field]: value } : filter
-    ));
-  };
-
-  const filteredStocks = useMemo(() => {
-    return sampleStocks.filter(stock => {
+  const applyFilters = () => {
+    const filteredData = sampleStocks.filter(stock => {
       return filters.every(filter => {
         if (!filter.parameter || !filter.value) return true;
         
         const stockValue = stock[filter.parameter as keyof typeof stock];
-        const filterValue = parseFloat(filter.value) || 0; // Default to 0 if NaN
-        
+        const filterValue = parseFloat(filter.value) || 0;
+
         switch (filter.operator) {
           case '>': return Number(stockValue) > filterValue;
           case '<': return Number(stockValue) < filterValue;
@@ -69,14 +44,52 @@ const StockScreener = () => {
         }
       });
     });
-  }, [filters]);
+    setFilteredStocks(filteredData);
+  };
 
-  // Calculate pagination
-  const totalPages = Math.max(1, Math.ceil(filteredStocks.length / itemsPerPage));
-  const currentStocks = filteredStocks.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const handleSort = (key: string) => {
+    const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+    setSortConfig({ key, direction });
+    const sortedData = [...filteredStocks].sort((a, b) => {
+      const aValue = a[key as keyof typeof a];
+      const bValue = b[key as keyof typeof b];
+      if (aValue < bValue) return direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+    setFilteredStocks(sortedData);
+  };
+
+  const compareWithSampleStocks = () => {
+    const comparedData = sampleStocks.filter(stock => {
+      return filters.every(filter => {
+        if (!filter.parameter || !filter.value) return true;
+        
+        const stockValue = stock[filter.parameter as keyof typeof stock];
+        const filterValue = parseFloat(filter.value) || 0;
+
+        switch (filter.operator) {
+          case '>': return Number(stockValue) > filterValue;
+          case '<': return Number(stockValue) < filterValue;
+          case '=': return Number(stockValue) === filterValue;
+          default: return true;
+        }
+      });
+    });
+    setFilteredStocks(comparedData);
+  };
+
+  const updateFilter = (id: number, field: string, value: string) => {
+    setFilters(filters.map(filter => filter.id === id ? { ...filter, [field]: value } : filter));
+  };
+
+  const addFilter = () => {
+    setFilters([...filters, { id: filters.length + 1, parameter: '', operator: '>', value: '' }]);
+  };
+
+  const removeFilter = (id: number) => {
+    setFilters(filters.filter(filter => filter.id !== id));
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -135,63 +148,32 @@ const StockScreener = () => {
               className="mt-4"
             >
               <Plus className="h-4 w-4 mr-2" /> Add Filter
+            <Button
+              variant="outline"
+              onClick={applyFilters}
+              className="mt-4"
+            >
+              Apply Filters
+            </Button>
+            <Button
+              variant="outline"
+              onClick={compareWithSampleStocks}
+              className="mt-4"
+            >
+              Compare with Sample Stocks
+            </Button>
             </Button>
           </div>
         </CardContent>
       </Card>
-
-      {/* Results Table */}
-      <Card>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr>
-                  <th className="p-2 text-left">Name</th>
-                  {parameters.map(param => (
-                    <th key={param.id} className="p-2 text-left">{param.label}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {currentStocks.map((stock, index) => (
-                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
-                    <td className="p-2">{stock.Ticker}</td>
-                    {parameters.map(param => (
-                      <td key={param.id} className="p-2">
-                        {stock[param.key as keyof typeof stock] ? (stock[param.key as keyof typeof stock] as number).toFixed(2) : "-"}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-4 space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </Button>
-              <span className="py-2 px-4">
-                Page {currentPage} of {totalPages}
-              </span>
-              <Button
-                variant="outline"
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      
+      {/* Pass filtered stocks to SortableStockTable */}
+      <SortableStockTable
+        stocks={filteredStocks.map(stock => ({ ...stock, name: stock.Ticker }))}
+        parameters={parameters}
+        sortConfig={{ ...sortConfig, direction: sortConfig.direction === 'asc' || sortConfig.direction === 'desc' ? sortConfig.direction : 'asc' }}
+        onSort={handleSort}
+      />
     </div>
   );
 };

@@ -3,16 +3,14 @@ import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Stock {
-  id: string;
   name: string;
-  [key: string]: unknown; // For dynamic parameter values
+  [key: string]: string | number | boolean;
 }
 
 interface Parameter {
   id: string;
   key: string;
   label: string;
-  format: (value: unknown) => string | number;
 }
 
 interface SortConfig {
@@ -20,21 +18,14 @@ interface SortConfig {
   direction: 'asc' | 'desc';
 }
 
-interface SortableStockTableProps {
+type SortableStockTableProps = {
   stocks: Stock[];
   parameters: Parameter[];
   sortConfig: SortConfig;
   onSort: (key: string) => void;
-  currentPage: number;
-  itemsPerPage: number;
 }
 
-const SortableStockTable: React.FC<SortableStockTableProps> = ({
-  stocks,
-  parameters,
-  sortConfig,
-  onSort,
-}) => {
+const SortableStockTable: React.FC<SortableStockTableProps> = ({ stocks, parameters, sortConfig, onSort }) => {
   const getHeaderSortIcon = (paramId: string) => {
     if (sortConfig.key === paramId) {
       return sortConfig.direction === 'asc' ? 
@@ -45,7 +36,7 @@ const SortableStockTable: React.FC<SortableStockTableProps> = ({
   };
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border mt-4">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -65,24 +56,24 @@ const SortableStockTable: React.FC<SortableStockTableProps> = ({
               ))}
             </tr>
           </thead>
-          <tbody>
+          <body>
             {stocks.map((stock, index) => (
               <tr
-                key={stock.id}
-                className={`
-                  border-b transition-colors hover:bg-gray-50/50
-                  ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}
-                `}
+                key={index}
+                className={`border-b transition-colors hover:bg-gray-50/50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
               >
                 <td className="py-3 px-4 font-medium">{stock.name}</td>
                 {parameters.map(param => (
                   <td key={param.id} className="py-3 px-4 text-right">
-                    {param.format(stock[param.key])}
+                    {typeof stock[param.key as keyof typeof stock] === 'number' ? 
+                      (stock[param.key as keyof typeof stock] as number).toFixed(2) : 
+                      "-"
+                    }
                   </td>
                 ))}
               </tr>
             ))}
-          </tbody>
+          </body>
         </table>
       </div>
     </div>
