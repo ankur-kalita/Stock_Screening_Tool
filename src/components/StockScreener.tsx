@@ -3,10 +3,9 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import sampleStocks from "../assests/sampleStocks.json";
 import SortableStockTable from "./SortableStockTable";
-import { Lexend } from "next/font/google";
 
 const parameters = [
   { id: "marketCap", label: "Market Capitalization (B)", key: "marketCap" },

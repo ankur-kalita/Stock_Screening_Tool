@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { Lexend, Pacifico } from "next/font/google";
+import { Lexend } from "next/font/google";
 
-const paci = Pacifico({
-  weight: "400",
-  subsets: ['latin'],
-  preload: true,
-});
-
-export const metadata: Metadata = {
-  title: "Stock Screener",
-  description: "A web-based stock screening tool",
-};
+// Define the fonts
+// const pacifico = Pacifico({
+//   weight: "400",
+//   subsets: ["latin"],
+//   preload: true,
+// });
 
 const lexend = Lexend({
   subsets: ["latin"],
   display: "swap",
 });
 
+// Metadata for the page
+export const metadata: Metadata = {
+  title: "Stock Screener",
+  description: "A web-based stock screening tool",
+};
+
+// Root layout component
 export default function RootLayout({
   children,
 }: {
@@ -26,7 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={lexend.className}>{children}</body>
+      <body className={lexend.className}>
+        {children}
+      </body>
     </html>
   );
 }
