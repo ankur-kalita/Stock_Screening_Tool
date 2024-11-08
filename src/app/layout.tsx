@@ -5,6 +5,8 @@ import { Lexend, Pacifico } from "next/font/google";
 
 const paci = Pacifico({
   weight: "400",
+  subsets: ['latin'],
+  preload: true,
 });
 
 export const metadata: Metadata = {
