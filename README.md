@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**Stock Screener Application**
 
-## Getting Started
+This is a React-based stock screener application that allows users to filter and sort stocks based on various parameters.
 
-First, run the development server:
+**Setup**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+To set up the application, follow these steps:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repository using the command `git clone https://github.com/your-username/stock-screener.git`
+2. Navigate to the project directory using the command `cd stock-screener`
+3. Install the required dependencies using the command `npm install`
+4. Start the application using the command `npm run dev`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Usage**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application allows users to filter and sort stocks based on the following parameters:
 
-## Learn More
+* Market Capitalization
+* P/E Ratio
+* ROE
+* Debt-to-Equity Ratio
+* Dividend Yield
+* Revenue Growth
+* EPS Growth
+* Current Ratio
+* Gross Margin
 
-To learn more about Next.js, take a look at the following resources:
+Users can add filters by clicking the "Add Filter" button and selecting the parameter and operator. They can also remove filters by clicking the "Remove" button next to each filter.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application also allows users to sort the stocks based on the selected parameter and direction (ascending or descending).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Features**
 
-## Deploy on Vercel
+* Filter stocks based on various parameters
+* Sort stocks based on selected parameter and direction
+* Add and remove filters dynamically
+* Compare filtered stocks with sample stocks
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Code Structure**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The code is structured into the following components:
+
+* `StockScreener.tsx`: The main component that renders the stock screener application
+* `SortableStockTable.tsx`: The component that renders the sortable stock table
+* `parameters.json`: The file that contains the parameter data
+* `sampleStocks.json`: The file that contains the sample stock data
+
+**Dependencies**
+
+The application uses the following dependencies:
+
+* React
+* TypeScript
+* Lucide React
+* clsx
+
+Note that this README file is based on my understanding of your code, and you may need to modify it to fit your specific use case.
