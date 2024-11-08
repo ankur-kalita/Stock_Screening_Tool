@@ -1,4 +1,4 @@
-**Stock Screener Application**
+#Stock Screener Application#
 
 This is a React-based stock screener application that allows users to filter and sort stocks based on various parameters.
 
@@ -6,10 +6,9 @@ This is a React-based stock screener application that allows users to filter and
 
 To set up the application, follow these steps:
 
-1. Clone the repository using the command `git clone https://github.com/your-username/stock-screener.git`
-2. Navigate to the project directory using the command `cd stock-screener`
-3. Install the required dependencies using the command `npm install`
-4. Start the application using the command `npm run dev`
+1. Clone the repository using the command `git clone https://github.com/ankur-kalita/Stock_Screening_Tool.git`
+2. Install the required dependencies using the command `npm install`
+3. Start the application using the command `npm run dev`
 
 **Usage**
 
