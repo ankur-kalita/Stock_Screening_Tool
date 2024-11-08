@@ -1,4 +1,4 @@
-#Stock Screener Application#
+# Stock Screener Application
 
 This is a React-based stock screener application that allows users to filter and sort stocks based on various parameters.
 
