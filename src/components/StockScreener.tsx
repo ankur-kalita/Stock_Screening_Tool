@@ -108,7 +108,7 @@ const StockScreener = () => {
     <div className={"container mx-auto p-4"}>
       <Card className="">
         <CardHeader>
-          <CardTitle className="text-3xl">Query Results</CardTitle>
+          <CardTitle className="text-3xl">Search Query</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-3">
